@@ -1,0 +1,10 @@
+---
+- hosts: test_machine01
+  roles:
+
+#    - nginx
+#    - php
+#    - mysql
+#    - install_user
+   - laravel
+#    - iptables 

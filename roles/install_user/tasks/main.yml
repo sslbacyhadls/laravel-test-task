@@ -1,0 +1,14 @@
+
+---
+
+- name: Create user
+  user:
+    name: "{{users}}"
+
+- name: Add users to sudoers
+  community.general.sudoers:
+    name: no_pasword
+    state: present
+    user: "{{users}}"
+    commands: ALL
+    nopassword: true

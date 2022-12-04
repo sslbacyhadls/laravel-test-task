@@ -1,0 +1,45 @@
+---
+- name: Get laravel
+  ansible.builtin.git:
+    repo: 'https://github.com/laravel/laravel'
+    dest: "{{ laravel_dest }}"
+    version: 6.x
+
+- name: Download composer installer
+  ansible.builtin.get_url:
+    url: https://getcomposer.org/installer
+    dest: "{{ laravel_dest}}/composer-setup.php"
+    mode: '0440'
+
+- name: Install composer
+  shell: "cd {{laravel_dest}} && php composer-setup.php --install-dir=/bin --filename=composer"
+
+- name: install requirements
+  apt: 
+    name: "{{item}}"
+    state: present
+  with_items:
+    - php-xml
+    - phpunit
+    - zip
+    - php-zip
+
+- name: Run composer
+  shell: "cd /opt/laravel && yes | composer install"
+
+- name: template configuration
+  template: 
+    src: "{{ item }}"
+    dest: "{{laravel_dest}}"
+    owner: nginx
+    group: nginx
+  with_items:
+    - .env
+
+- name: prepare laravel project
+  shell: "cd {{laravel_dest}} && {{item}}"
+  with_items: 
+  - "php artisan key:generate"
+
+- name: start laravel
+  shell: "php artisan serve --port={{ proxy_endpoint.split(':')[2] }} &"

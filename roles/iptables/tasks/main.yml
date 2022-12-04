@@ -1,0 +1,14 @@
+---
+
+- name: Open specific ports
+  iptables: 
+    chain: INPUT
+    protocol: tcp
+    destination_ports:
+      "{{ open_port_list }}"
+    jump: ACCEPT
+
+- name: DROP all other packets
+  iptables:
+    chain: INPUT
+    jump: DROP

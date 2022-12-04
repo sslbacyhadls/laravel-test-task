@@ -1,0 +1,14 @@
+############ NGXIN ##############
+default_port: 80
+server_name: test-task.local
+proxy_endpoint: http://127.0.0.1:9999
+
+
+############ IPTABLES ############
+open_port_list: ["22", "80", "443"]
+
+############ LARAVEL  #############
+laravel_dest: /opt/laravel
+
+############ USERS    #############
+users: ["Ubuntu"]

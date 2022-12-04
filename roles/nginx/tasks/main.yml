@@ -1,0 +1,26 @@
+---
+
+- name: install nginx
+  apt: 
+    name: nginx
+    state: present
+
+- name: template configuration
+  template: 
+    src: "{{ item }}"
+    dest: "/etc/nginx/{{ item }}"
+    owner: nginx
+    group: nginx
+  with_items:
+    - nginx.conf
+    - conf.d/default.conf
+    - locations/laravel_location.conf
+
+- name: test nginx
+  shell: nginx -t
+
+- name: restart nginx
+  systemd: 
+    name: nginx
+    state: restarted
+    enabled: yes
