@@ -3,12 +3,24 @@
 
 - name: Create user
   user:
-    name: "{{users}}"
+    name: "{{item}}"
+  with_items:
+    - "{{ubuntu.name}}"
 
 - name: Add users to sudoers
   community.general.sudoers:
     name: no_pasword
     state: present
-    user: "{{users}}"
+    user: "{{item}}"
     commands: ALL
     nopassword: true
+  with_items:
+    - "{{ubuntu.name}}"
+
+- name: Add ssh-keys
+  lineinfile:
+    path: "/home/{{item.name}}/.ssh/authorized_keys"
+    line: "{{item.key}}"
+    create: yes
+  with_items:
+    - "{{ubuntu}}"

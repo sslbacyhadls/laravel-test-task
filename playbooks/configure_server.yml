@@ -5,6 +5,6 @@
 #    - nginx
 #    - php
 #    - mysql
-#    - install_user
-   - laravel
+    - install_user
+#    - laravel
 #    - iptables 
